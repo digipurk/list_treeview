@@ -81,8 +81,7 @@ class NodeController {
     resetNodesAfterChildAtIndex(min);
   }
 
-  void insertChildControllers(
-      List<NodeController>? controllers, List<int> indexes) {
+  void insertChildControllers(List<NodeController>? controllers, List<int> indexes) {
     if (controllers == null || controllers.length == 0) {
       return;
     }

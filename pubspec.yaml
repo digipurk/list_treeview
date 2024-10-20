@@ -18,7 +18,7 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter.
-flutter:
+#flutter:
   # publish : flutter packages pub publish --server https://pub.dartlang.org
   # format dartfmt -w .
   # To add assets to your package, add an assets section, like this:

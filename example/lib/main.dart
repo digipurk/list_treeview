@@ -2,7 +2,6 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:list_treeview/list_treeview.dart';
-import 'package:list_treeview/tree/tree_view.dart';
 
 void main() {
   runApp(MyApp());
@@ -39,11 +38,10 @@ class _HomePageState extends State<HomePage> {
         title: Text('Home'),
       ),
       body: Center(
-        child: RaisedButton(
+        child: ElevatedButton(
           child: Text('TreeView'),
           onPressed: () {
-            Navigator.push(
-                context, CupertinoPageRoute(builder: (_) => TreePage()));
+            Navigator.push(context, CupertinoPageRoute(builder: (_) => TreePage()));
           },
         ),
       ),
@@ -76,8 +74,7 @@ class TreePage extends StatefulWidget {
   }
 }
 
-class _TreePageState extends State<TreePage>
-    with SingleTickerProviderStateMixin {
+class _TreePageState extends State<TreePage> with SingleTickerProviderStateMixin {
   TreeViewController? _controller;
   bool _isSuccess = false;
   List<Color> _colors = [];
@@ -89,16 +86,11 @@ class _TreePageState extends State<TreePage>
     _controller = TreeViewController();
 
     for (int i = 0; i < 100; i++) {
-      if (randomColor() != null) {
-        _colors.add(randomColor());
-      }
+      _colors.add(randomColor());
     }
-
 
     ///Data may be requested asynchronously
     getData();
-
-
   }
 
   void getData() async {
@@ -107,28 +99,20 @@ class _TreePageState extends State<TreePage>
     await Future.delayed(Duration(seconds: 2));
 
     var colors1 = TreeNodeData(label: 'Colors1');
-    var color11 = TreeNodeData(
-        label: 'rgb(0,139,69)', color: Color.fromARGB(255, 0, 139, 69));
-    var color12 = TreeNodeData(
-        label: 'rgb(0,139,69)', color: Color.fromARGB(255, 0, 191, 255));
-    var color13 = TreeNodeData(
-        label: 'rgb(0,139,69)', color: Color.fromARGB(255, 255, 106, 106));
-    var color14 = TreeNodeData(
-        label: 'rgb(0,139,69)', color: Color.fromARGB(255, 160, 32, 240));
+    var color11 = TreeNodeData(label: 'rgb(0,139,69)', color: Color.fromARGB(255, 0, 139, 69));
+    var color12 = TreeNodeData(label: 'rgb(0,139,69)', color: Color.fromARGB(255, 0, 191, 255));
+    var color13 = TreeNodeData(label: 'rgb(0,139,69)', color: Color.fromARGB(255, 255, 106, 106));
+    var color14 = TreeNodeData(label: 'rgb(0,139,69)', color: Color.fromARGB(255, 160, 32, 240));
     colors1.addChild(color11);
     colors1.addChild(color12);
     colors1.addChild(color13);
     colors1.addChild(color14);
 
     var colors2 = TreeNodeData(label: 'Colors2');
-    var color21 = TreeNodeData(
-        label: 'rgb(0,139,69)', color: Color.fromARGB(255, 255, 64, 64));
-    var color22 = TreeNodeData(
-        label: 'rgb(0,139,69)', color: Color.fromARGB(255, 28, 134, 238));
-    var color23 = TreeNodeData(
-        label: 'rgb(0,139,69)', color: Color.fromARGB(255, 255, 106, 106));
-    var color24 = TreeNodeData(
-        label: 'rgb(0,139,69)', color: Color.fromARGB(255, 205, 198, 115));
+    var color21 = TreeNodeData(label: 'rgb(0,139,69)', color: Color.fromARGB(255, 255, 64, 64));
+    var color22 = TreeNodeData(label: 'rgb(0,139,69)', color: Color.fromARGB(255, 28, 134, 238));
+    var color23 = TreeNodeData(label: 'rgb(0,139,69)', color: Color.fromARGB(255, 255, 106, 106));
+    var color24 = TreeNodeData(label: 'rgb(0,139,69)', color: Color.fromARGB(255, 205, 198, 115));
     colors2.addChild(color21);
     colors2.addChild(color22);
     colors2.addChild(color23);
@@ -168,8 +152,7 @@ class _TreePageState extends State<TreePage>
     int g = Random.secure().nextInt(255);
     int b = Random.secure().nextInt(255);
 
-    var newNode = TreeNodeData(
-        label: 'rgb($r,$g,$b)', color: Color.fromARGB(255, r, g, b));
+    var newNode = TreeNodeData(label: 'rgb($r,$g,$b)', color: Color.fromARGB(255, r, g, b));
 
     _controller!.insertAtFront(dataNode, newNode);
 //    _controller.insertAtRear(dataNode, newNode);
@@ -215,8 +198,7 @@ class _TreePageState extends State<TreePage>
         return Container(
           height: 54,
           padding: EdgeInsets.symmetric(horizontal: 16),
-          decoration: BoxDecoration(
-              border: Border(bottom: BorderSide(width: 1, color: Colors.grey))),
+          decoration: BoxDecoration(border: Border(bottom: BorderSide(width: 1, color: Colors.grey))),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -250,8 +232,7 @@ class _TreePageState extends State<TreePage>
                       ),
                       Text(
                         'level-${item.level}-${item.indexInParent}',
-                        style: TextStyle(
-                            fontSize: 15, color: getColor(item.level)),
+                        style: TextStyle(fontSize: 15, color: getColor(item.level)),
                       ),
                       SizedBox(
                         width: 10,

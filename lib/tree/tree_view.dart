@@ -17,7 +17,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-import 'dart:io';
+//import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'controller/tree_controller.dart';
@@ -88,9 +88,7 @@ class _ListTreeViewState extends State<ListTreeView> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.controller == null ||
-        widget.controller!.data == null ||
-        widget.controller!.data!.length == 0) {
+    if (widget.controller == null || widget.controller!.data == null || widget.controller!.data!.length == 0) {
       return Center(
         child: Text(''),
       );
@@ -112,15 +110,12 @@ class _ListTreeViewState extends State<ListTreeView> {
               TreeNode treeNode = widget.controller!.treeNodeOfIndex(index);
 
               ///The level of the current item
-              treeNode.item!.level =
-                  widget.controller!.levelOfNode(treeNode.item);
-              treeNode.item!.isExpand =
-                  widget.controller!.isExpanded(treeNode.item);
+              treeNode.item!.level = widget.controller!.levelOfNode(treeNode.item);
+              treeNode.item!.isExpand = widget.controller!.isExpanded(treeNode.item);
               treeNode.item!.index = index;
               NodeData? parent = widget.controller!.parentOfItem(treeNode.item);
               if (parent != null && parent.children.length > 0) {
-                treeNode.item!.indexInParent =
-                    parent.children.indexOf(treeNode.item!);
+                treeNode.item!.indexInParent = parent.children.indexOf(treeNode.item!);
               } else {
                 treeNode.item!.indexInParent = 0;
               }

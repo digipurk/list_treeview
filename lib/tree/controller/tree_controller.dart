@@ -65,12 +65,17 @@ class TreeViewController extends ChangeNotifier {
     return _rootController!.indexOfItem(item);
   }
 
+  void insertRoot(NodeData newRoot) {
+    data?.add(newRoot);
+    _insertItemAtIndex(0, newRoot, isFront: false);
+    notifyListeners();
+  }
+
   /// Insert a node in the head
   /// [parent] The parent node
   /// [newNode] The node will be insert
   /// [closeCanInsert] Can insert when parent closed
-  void insertAtFront(NodeData? parent, NodeData newNode,
-      {bool closeCanInsert = false}) {
+  void insertAtFront(NodeData? parent, NodeData newNode, {bool closeCanInsert = false}) {
     if (!closeCanInsert) {
       if (parent != null && !isExpanded(parent)) {
         return;
@@ -85,8 +90,7 @@ class TreeViewController extends ChangeNotifier {
   /// [parent] The parent node
   /// [newNode] The node will be insert
   /// [closeCanInsert] Can insert when parent closed
-  void insertAllAtFront(NodeData? parent, List<NodeData> newNodes,
-      {bool closeCanInsert = false}) {
+  void insertAllAtFront(NodeData? parent, List<NodeData> newNodes, {bool closeCanInsert = false}) {
     if (!closeCanInsert) {
       if (parent != null && !isExpanded(parent)) {
         return;
@@ -101,8 +105,7 @@ class TreeViewController extends ChangeNotifier {
   /// [parent] The parent node
   /// [newNode] The node will be insert
   /// [closeCanInsert] Can insert when parent closed
-  void insertAtRear(NodeData? parent, NodeData newNode,
-      {bool closeCanInsert = false}) {
+  void insertAtRear(NodeData? parent, NodeData newNode, {bool closeCanInsert = false}) {
     if (!closeCanInsert) {
       if (parent != null && !isExpanded(parent)) {
         return;
@@ -115,8 +118,7 @@ class TreeViewController extends ChangeNotifier {
 
   ///Inserts a node at position [index] in parent.
   /// The [index] value must be non-negative and no greater than [length].
-  void insertAtIndex(int index, dynamic parent, NodeData newNode,
-      {bool closeCanInsert = false}) {
+  void insertAtIndex(int index, dynamic parent, NodeData newNode, {bool closeCanInsert = false}) {
     assert(index <= parent.children.length);
     if (!closeCanInsert) {
       if (parent != null && !isExpanded(parent)) {
@@ -147,8 +149,7 @@ class TreeViewController extends ChangeNotifier {
   /// Begin collapse
   void collapseItem(TreeNode treeNode) {
     /// - warning
-    NodeController controller =
-        _rootController!.controllerOfItem(treeNode.item)!;
+    NodeController controller = _rootController!.controllerOfItem(treeNode.item)!;
     controller.collapseAndCollapseChildren(true);
   }
 
@@ -198,7 +199,7 @@ class TreeViewController extends ChangeNotifier {
 
   ///Gets the number of visible children of the ListTreeView
   int numberOfVisibleChild() {
-    final num = this.rootController.numberOfVisibleDescendants();
+    //final num = this.rootController.numberOfVisibleDescendants();
     return this.rootController.numberOfVisibleDescendants();
   }
 
@@ -233,8 +234,7 @@ class TreeViewController extends ChangeNotifier {
     while (items.length > 0) {
       var currentItem = items.first;
       items.remove(currentItem);
-      NodeController controller =
-          _rootController!.controllerOfItem(currentItem)!;
+      NodeController controller = _rootController!.controllerOfItem(currentItem)!;
       List oldChildItems = [];
       for (NodeController controller in controller.childControllers) {
         oldChildItems.add(controller);
@@ -250,8 +250,7 @@ class TreeViewController extends ChangeNotifier {
       List<NodeController> childControllersToRemove = [];
       List<int> indexesForDeletions = [];
       for (NodeController loopNodeController in currentChildControllers) {
-        if (!controller.childControllers.contains(loopNodeController) &&
-            !oldChildItems.contains(controller.treeNode.item)) {
+        if (!controller.childControllers.contains(loopNodeController) && !oldChildItems.contains(controller.treeNode.item)) {
           childControllersToInsert.add(loopNodeController);
           int index = currentChildControllers.indexOf(loopNodeController);
           assert(index != -1);
@@ -260,8 +259,7 @@ class TreeViewController extends ChangeNotifier {
       }
 
       for (NodeController loopNodeController in controller.childControllers) {
-        if (!currentChildControllers.contains(loopNodeController) &&
-            !childControllersToInsert.contains(loopNodeController)) {
+        if (!currentChildControllers.contains(loopNodeController) && !childControllersToInsert.contains(loopNodeController)) {
           childControllersToRemove.add(loopNodeController);
           int index = controller.childControllers.indexOf(loopNodeController);
           assert(index != -1);
@@ -270,27 +268,21 @@ class TreeViewController extends ChangeNotifier {
       }
 
       controller.removeChildControllers(indexesForDeletions);
-      controller.insertChildControllers(
-          childControllersToInsert, indexesForInsertions);
-      bool expandChildren = false;
+      controller.insertChildControllers(childControllersToInsert, indexesForInsertions);
+/*       bool expandChildren = false;
       if (expandChildren) {
         for (NodeController nodeController in controller.childControllers) {
           items.add(nodeController.treeNode.item);
         }
       }
+ */
       controller.expandAndExpandChildren(false);
       notifyListeners();
     }
   }
 
-  void _insertItemAtIndex(int index, dynamic parent,
-      {bool isIndex = false, bool isFront = true}) {
-    int idx = indexOfItem(parent);
-    if (idx == -1) {
-      return;
-    }
-    NodeController parentController =
-        _rootController!.controllerOfItem(parent)!;
+  void _insertItemAtIndex(int index, dynamic parent, {bool isIndex = false, bool isFront = true}) {
+    NodeController parentController = indexOfItem(parent) == -1 ? _rootController! : _rootController!.controllerOfItem(parent)!;
     if (isIndex) {
       var newControllers = createNodeController(parentController, [index]);
       parentController.insertNewChildControllers(newControllers[0], index);
@@ -299,21 +291,18 @@ class TreeViewController extends ChangeNotifier {
         var newControllers = createNodeController(parentController, [0]);
         parentController.insertChildControllers(newControllers, [0]);
       } else {
-        var newControllers = createNodeController(
-            parentController, [parentController.childControllers.length]);
+        var newControllers = createNodeController(parentController, [parentController.childControllers.length]);
         parentController.addChildController(newControllers);
       }
     }
   }
 
-  void _insertAllItemAtIndex(int index, dynamic parent, List<NodeData> newNodes,
-      {bool isIndex = false, bool isFront = true}) {
+  void _insertAllItemAtIndex(int index, dynamic parent, List<NodeData> newNodes, {bool isIndex = false, bool isFront = true}) {
     int idx = indexOfItem(parent);
     if (idx == -1) {
       return;
     }
-    NodeController parentController =
-        _rootController!.controllerOfItem(parent)!;
+    NodeController parentController = _rootController!.controllerOfItem(parent)!;
     if (isIndex) {
       var newControllers = createNodeController(parentController, [index]);
       parentController.insertNewChildControllers(newControllers[0], index);
@@ -326,8 +315,7 @@ class TreeViewController extends ChangeNotifier {
         var newControllers = createNodeController(parentController, nodes);
         parentController.insertChildControllers(newControllers, nodes);
       } else {
-        var newControllers = createNodeController(
-            parentController, [parentController.childControllers.length]);
+        var newControllers = createNodeController(parentController, [parentController.childControllers.length]);
         parentController.addChildController(newControllers);
       }
     }
@@ -338,15 +326,13 @@ class TreeViewController extends ChangeNotifier {
     if (parent != null && !isExpanded(parent)) {
       return;
     }
-    NodeController nodeController =
-        _rootController!.controllerOfItem(parent)!.childControllers[index];
+    NodeController nodeController = _rootController!.controllerOfItem(parent)!.childControllers[index];
     dynamic child = nodeController.treeNode.item;
     int idx = _rootController!.lastVisibleDescendantIndexForItem(child);
     if (idx == -1) {
       return;
     }
-    NodeController parentController =
-        _rootController!.controllerOfItem(parent)!;
+    NodeController parentController = _rootController!.controllerOfItem(parent)!;
     parentController.removeChildControllers([index]);
   }
 
@@ -359,10 +345,8 @@ class TreeViewController extends ChangeNotifier {
   }
 
   /// Create controllers for each child node
-  List<NodeController> createNodeController(
-      NodeController parentController, List<int> indexes) {
-    List<NodeController> children =
-        parentController.childControllers.map((e) => e).toList();
+  List<NodeController> createNodeController(NodeController parentController, List<int> indexes) {
+    List<NodeController> children = parentController.childControllers.map((e) => e).toList();
     List<NodeController> newChildren = [];
 
     indexes.forEach((element) {});
@@ -370,8 +354,7 @@ class TreeViewController extends ChangeNotifier {
     for (int i in indexes) {
       NodeController? controller;
       NodeController? oldController;
-      var lazyItem = TreeNodeItem(
-          parent: parentController.treeNode.item, controller: this, index: i);
+      var lazyItem = TreeNodeItem(parent: parentController.treeNode.item, controller: this, index: i);
       parentController.childControllers.forEach((controller) {
         if (controller.treeNode.item == lazyItem.item) {
           oldController = controller;
@@ -398,10 +381,8 @@ class TreeViewController extends ChangeNotifier {
     return newChildren;
   }
 
-  NodeController createNewNodeController(
-      NodeController parentController, int index) {
-    var lazyItem = TreeNodeItem(
-        parent: parentController.treeNode.item, controller: this, index: index);
+  NodeController createNewNodeController(NodeController parentController, int index) {
+    var lazyItem = TreeNodeItem(parent: parentController.treeNode.item, controller: this, index: index);
     NodeController controller = NodeController(
         parent: parentController,
         nodeItem: lazyItem,
