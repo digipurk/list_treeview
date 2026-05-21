@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:list_treeview/list_treeview.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -17,12 +19,14 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: HomePage(),
+      home: const HomePage(),
     );
   }
 }
 
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
   State<StatefulWidget> createState() {
     return _HomePageState();
@@ -32,16 +36,15 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home'),
+        title: const Text('Home'),
       ),
       body: Center(
         child: ElevatedButton(
-          child: Text('TreeView'),
+          child: const Text('TreeView'),
           onPressed: () {
-            Navigator.push(context, CupertinoPageRoute(builder: (_) => TreePage()));
+            Navigator.push(context, CupertinoPageRoute(builder: (_) => const TreePage()));
           },
         ),
       ),
@@ -67,9 +70,10 @@ class TreeNodeData extends NodeData {
 }
 
 class TreePage extends StatefulWidget {
+  const TreePage({super.key});
+
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return _TreePageState();
   }
 }
@@ -77,6 +81,7 @@ class TreePage extends StatefulWidget {
 class _TreePageState extends State<TreePage> with SingleTickerProviderStateMixin {
   TreeViewController? _controller;
   bool _isSuccess = false;
+  // ignore: prefer_final_fields
   List<Color> _colors = [];
   @override
   void initState() {
@@ -94,25 +99,26 @@ class _TreePageState extends State<TreePage> with SingleTickerProviderStateMixin
   }
 
   void getData() async {
+    // ignore: avoid_print
     print('start get data');
     _isSuccess = false;
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 2));
 
     var colors1 = TreeNodeData(label: 'Colors1');
-    var color11 = TreeNodeData(label: 'rgb(0,139,69)', color: Color.fromARGB(255, 0, 139, 69));
-    var color12 = TreeNodeData(label: 'rgb(0,139,69)', color: Color.fromARGB(255, 0, 191, 255));
-    var color13 = TreeNodeData(label: 'rgb(0,139,69)', color: Color.fromARGB(255, 255, 106, 106));
-    var color14 = TreeNodeData(label: 'rgb(0,139,69)', color: Color.fromARGB(255, 160, 32, 240));
+    var color11 = TreeNodeData(label: 'rgb(0,139,69)', color: const Color.fromARGB(255, 0, 139, 69));
+    var color12 = TreeNodeData(label: 'rgb(0,139,69)', color: const Color.fromARGB(255, 0, 191, 255));
+    var color13 = TreeNodeData(label: 'rgb(0,139,69)', color: const Color.fromARGB(255, 255, 106, 106));
+    var color14 = TreeNodeData(label: 'rgb(0,139,69)', color: const Color.fromARGB(255, 160, 32, 240));
     colors1.addChild(color11);
     colors1.addChild(color12);
     colors1.addChild(color13);
     colors1.addChild(color14);
 
     var colors2 = TreeNodeData(label: 'Colors2');
-    var color21 = TreeNodeData(label: 'rgb(0,139,69)', color: Color.fromARGB(255, 255, 64, 64));
-    var color22 = TreeNodeData(label: 'rgb(0,139,69)', color: Color.fromARGB(255, 28, 134, 238));
-    var color23 = TreeNodeData(label: 'rgb(0,139,69)', color: Color.fromARGB(255, 255, 106, 106));
-    var color24 = TreeNodeData(label: 'rgb(0,139,69)', color: Color.fromARGB(255, 205, 198, 115));
+    var color21 = TreeNodeData(label: 'rgb(0,139,69)', color: const Color.fromARGB(255, 255, 64, 64));
+    var color22 = TreeNodeData(label: 'rgb(0,139,69)', color: const Color.fromARGB(255, 28, 134, 238));
+    var color23 = TreeNodeData(label: 'rgb(0,139,69)', color: const Color.fromARGB(255, 255, 106, 106));
+    var color24 = TreeNodeData(label: 'rgb(0,139,69)', color: const Color.fromARGB(255, 205, 198, 115));
     colors2.addChild(color21);
     colors2.addChild(color22);
     colors2.addChild(color23);
@@ -120,6 +126,7 @@ class _TreePageState extends State<TreePage> with SingleTickerProviderStateMixin
 
     /// set data
     _controller!.treeData([colors1]);
+    // ignore: avoid_print
     print('set treeData suceess');
 
     setState(() {
@@ -128,6 +135,7 @@ class _TreePageState extends State<TreePage> with SingleTickerProviderStateMixin
   }
 
   @override
+  // ignore: unnecessary_overrides
   void dispose() {
     super.dispose();
   }
@@ -175,14 +183,14 @@ class _TreePageState extends State<TreePage> with SingleTickerProviderStateMixin
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('TreeView'),
+        title: const Text('TreeView'),
       ),
       body: _isSuccess ? getBody() : getProgressView(),
     );
   }
 
   Widget getProgressView() {
-    return Center(
+    return const Center(
       child: CircularProgressIndicator(),
     );
   }
@@ -190,15 +198,15 @@ class _TreePageState extends State<TreePage> with SingleTickerProviderStateMixin
   Widget getBody() {
     return ListTreeView(
       shrinkWrap: false,
-      padding: EdgeInsets.all(0),
+      padding: const EdgeInsets.all(0),
       itemBuilder: (BuildContext context, NodeData data) {
         TreeNodeData item = data as TreeNodeData;
 //              double width = MediaQuery.of(context).size.width;
         double offsetX = item.level * 16.0;
         return Container(
           height: 54,
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          decoration: BoxDecoration(border: Border(bottom: BorderSide(width: 1, color: Colors.grey))),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          decoration: const BoxDecoration(border: Border(bottom: BorderSide(width: 1, color: Colors.grey))),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -210,20 +218,21 @@ class _TreePageState extends State<TreePage> with SingleTickerProviderStateMixin
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Padding(
-                        padding: EdgeInsets.only(right: 5),
+                        padding: const EdgeInsets.only(right: 5),
                         child: InkWell(
+                          // ignore: deprecated_member_use
                           splashColor: Colors.amberAccent.withOpacity(1),
                           highlightColor: Colors.red,
                           onTap: () {
                             selectAllChild(item);
                           },
                           child: data.isSelected
-                              ? Icon(
+                              ? const Icon(
                                   Icons.star,
                                   size: 30,
                                   color: Color(0xFFFF7F50),
                                 )
-                              : Icon(
+                              : const Icon(
                                   Icons.star_border,
                                   size: 30,
                                   color: Color(0xFFFFDAB9),
@@ -234,7 +243,7 @@ class _TreePageState extends State<TreePage> with SingleTickerProviderStateMixin
                         'level-${item.level}-${item.indexInParent}',
                         style: TextStyle(fontSize: 15, color: getColor(item.level)),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
 //                          Text(
@@ -251,7 +260,7 @@ class _TreePageState extends State<TreePage> with SingleTickerProviderStateMixin
                   onTap: () {
                     add(item);
                   },
-                  child: Icon(
+                  child: const Icon(
                     Icons.add,
                     size: 30,
                   ),
@@ -262,6 +271,7 @@ class _TreePageState extends State<TreePage> with SingleTickerProviderStateMixin
         );
       },
       onTap: (NodeData data) {
+        // ignore: avoid_print
         print('index = ${data.index}');
       },
       onLongPress: (data) {
